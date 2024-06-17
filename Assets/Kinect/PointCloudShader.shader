@@ -32,12 +32,12 @@
             Texture2D<float4> _XYLookup;
 
             // Duplicated Space
-            float _EnableDuplicate;
+            #pragma shader_feature __ _DUPLICATE_ON
             float _ROIScale = 1;
             float _DuplScale = 1;
             float4 _CenterOfROI;
             float4x4 _ROI2Duplicate;
-            float4x4 _CubeInverseTransform;
+            float4x4 _DuplInverseTransform;
 
 
             SamplerState sampler_ColorTex
@@ -152,68 +152,67 @@
 
                 outStream.RestartStrip();
                 
-                if(_EnableDuplicate > 0.5 && distance(mul(unity_ObjectToWorld, pos0).xyz, _CenterOfROI) < _ROIScale)
-                {
-                    o.IsDuplicate = 1;
+                #if _DUPLICATE_ON
+                    if(distance(mul(unity_ObjectToWorld, pos0).xyz, _CenterOfROI) < _ROIScale)
+                    {
+                        o.IsDuplicate = 1;
                     
-                    float relativeScale = _DuplScale / _ROIScale;
-                    float4 vertexPos0 = mul(unity_ObjectToWorld, pos0);
-                    vertexPos0.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos0.xyz - _CenterOfROI.xyz));
+                        float relativeScale = _DuplScale / _ROIScale;
+                        float4 vertexPos0 = mul(unity_ObjectToWorld, pos0);
+                        vertexPos0.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos0.xyz - _CenterOfROI.xyz));
 
-                    float4 vertexPos1 = mul(unity_ObjectToWorld, pos1);
-                    vertexPos1.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos1.xyz - _CenterOfROI.xyz));
+                        float4 vertexPos1 = mul(unity_ObjectToWorld, pos1);
+                        vertexPos1.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos1.xyz - _CenterOfROI.xyz));
 
-                    float4 vertexPos2 = mul(unity_ObjectToWorld, pos2);
-                    vertexPos2.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos2.xyz - _CenterOfROI.xyz));
+                        float4 vertexPos2 = mul(unity_ObjectToWorld, pos2);
+                        vertexPos2.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos2.xyz - _CenterOfROI.xyz));
 
-                    float4 vertexPos3 = mul(unity_ObjectToWorld, pos3);
-                    vertexPos3.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos3.xyz - _CenterOfROI.xyz));
+                        float4 vertexPos3 = mul(unity_ObjectToWorld, pos3);
+                        vertexPos3.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos3.xyz - _CenterOfROI.xyz));
 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos0);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv0;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos0);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv0;
+                        outStream.Append(o);
                 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos1);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv1;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos1);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv1;
+                        outStream.Append(o);
 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos2);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv2;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos2);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv2;
+                        outStream.Append(o);
 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos1);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv1;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos1);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv1;
+                        outStream.Append(o);
 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos2);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv2;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos2);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv2;
+                        outStream.Append(o);
 
-                    o.posWorld = mul(_ROI2Duplicate, vertexPos3);
-                    o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
-                    o.uv = uv3;
-                    outStream.Append(o);
+                        o.posWorld = mul(_ROI2Duplicate, vertexPos3);
+                        o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
+                        o.uv = uv3;
+                        outStream.Append(o);
 
-                    outStream.RestartStrip();
-                }
-
+                        outStream.RestartStrip();
+                    }
+                #endif
 			}
 
             fixed4 frag (g2f i) : SV_Target
             {
-                if (i.IsDuplicate > 0.5f)
-				{
-				    float3 boxPosition = mul(_CubeInverseTransform, i.posWorld);
+                #if _DUPLICATE_ON
+                    float3 boxPosition = mul(_DuplInverseTransform, i.posWorld);
 
 				    clip(boxPosition + 0.5);
 				    clip(0.5 - boxPosition);
-				}
-
+                #endif
 
                 fixed4 col = _ColorTex.Sample(sampler_ColorTex, i.uv);
                 return col;

@@ -1,4 +1,4 @@
-Shader "Custom/TransparentScreen"
+Shader "Custom/ARBackground"
 {
     Properties
     {

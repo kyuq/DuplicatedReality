@@ -19,7 +19,7 @@ public class KinectController : MonoBehaviour
     [Tooltip("Only needs to be set when BlitToCamera is checked")]
     public Material TransparentBlitMaterial;
 
-    [Header("ReadOnly")]
+    [Header("ReadOnly and exposed for Debugging")]
     public Texture2D DepthImage;
     public Texture2D ColorImage;
     public Texture2D ColorInDepthImage;

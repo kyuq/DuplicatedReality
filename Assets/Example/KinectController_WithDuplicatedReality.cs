@@ -12,11 +12,15 @@ public class KinectController_WithDuplicatedReality : KinectController
 
     public override void OnSetPointcloudProperties(Material pointcloudMat)
     {
-        pointcloudMat.SetFloat("_EnableDuplicate", EnableDuplication ? 1 : 0);
+        if(EnableDuplication)
+            pointcloudMat.EnableKeyword("_DUPLICATE_ON");
+        else
+            pointcloudMat.DisableKeyword("_DUPLICATE_ON");
+
         pointcloudMat.SetFloat("_ROIScale", ROI.lossyScale.x);
         pointcloudMat.SetFloat("_DuplScale", Duplicate.lossyScale.x);
         pointcloudMat.SetVector("_CenterOfROI", ROI.position);
         pointcloudMat.SetMatrix("_ROI2Duplicate", Matrix4x4.TRS(Duplicate.position - ROI.position, Quaternion.Inverse(ROI.rotation) * Duplicate.rotation, Vector3.one));
-        pointcloudMat.SetMatrix("_CubeInverseTransform", Duplicate.worldToLocalMatrix);
+        pointcloudMat.SetMatrix("_DuplInverseTransform", Duplicate.worldToLocalMatrix);
     }
 }
