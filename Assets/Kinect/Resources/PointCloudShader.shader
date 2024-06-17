@@ -1,4 +1,4 @@
-﻿Shader "Unlit/PointCloud"
+﻿Shader "Kinect4Azure/PointCloud"
 {
     Properties
     {
@@ -31,13 +31,15 @@
             Texture2D<float4> _ColorTex;
             Texture2D<float4> _XYLookup;
 
+            #pragma shader_feature _ORIGINALPC_ON __
+
             // Duplicated Space
-            #pragma shader_feature __ _DUPLICATE_ON
+            #pragma shader_feature _DUPLICATE_ON __
             float _ROIScale = 1;
             float _DuplScale = 1;
-            float4 _CenterOfROI;
-            float4x4 _ROI2Duplicate;
-            float4x4 _DuplInverseTransform;
+            half4 _CenterOfROI;
+            half4x4 _ROI2Dupl;
+            half4x4 _DuplInverseTransform;
 
 
             SamplerState sampler_ColorTex
@@ -126,6 +128,7 @@
                 o.IsDuplicate = 0;
                 o.posWorld = float4(0,0,0,0);
 
+                #if _ORIGINALPC_ON
                 o.pos = UnityObjectToClipPos(pos0);
                 o.uv = uv0;
                 outStream.Append(o);
@@ -151,7 +154,8 @@
                 outStream.Append(o);
 
                 outStream.RestartStrip();
-                
+                #endif
+
                 #if _DUPLICATE_ON
                     if(distance(mul(unity_ObjectToWorld, pos0).xyz, _CenterOfROI) < _ROIScale)
                     {
@@ -170,32 +174,32 @@
                         float4 vertexPos3 = mul(unity_ObjectToWorld, pos3);
                         vertexPos3.xyz = _CenterOfROI.xyz + (relativeScale * (vertexPos3.xyz - _CenterOfROI.xyz));
 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos0);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos0);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv0;
                         outStream.Append(o);
                 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos1);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos1);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv1;
                         outStream.Append(o);
 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos2);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos2);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv2;
                         outStream.Append(o);
 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos1);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos1);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv1;
                         outStream.Append(o);
 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos2);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos2);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv2;
                         outStream.Append(o);
 
-                        o.posWorld = mul(_ROI2Duplicate, vertexPos3);
+                        o.posWorld = mul(_ROI2Dupl, vertexPos3);
                         o.pos = mul(UNITY_MATRIX_VP, o.posWorld);
                         o.uv = uv3;
                         outStream.Append(o);

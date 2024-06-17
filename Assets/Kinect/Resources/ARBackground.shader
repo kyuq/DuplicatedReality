@@ -1,4 +1,4 @@
-Shader "Custom/ARBackground"
+Shader "Kinect4Azure/ARBackground"
 {
     Properties
     {

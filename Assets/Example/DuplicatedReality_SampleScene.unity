@@ -396,11 +396,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c85ae533af38343b6d2c7d00a1df63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RenderPointcloud: 1
+  EnableOriginalPointcloud: 1
   PointCloudShader: {fileID: 4800000, guid: c010e960066ff73489f2d8a41b826438, type: 3}
   MaxPointDistance: 0.02
-  BlitToCamera: 1
-  TransparentBlitMaterial: {fileID: 2100000, guid: 48893fb64b8e75f4e9cf862f17c26ada, type: 2}
+  EnableARBackground: 1
+  ARBackgroundMaterial: {fileID: 2100000, guid: 48893fb64b8e75f4e9cf862f17c26ada, type: 2}
   DepthImage: {fileID: 0}
   ColorImage: {fileID: 0}
   ColorInDepthImage: {fileID: 0}

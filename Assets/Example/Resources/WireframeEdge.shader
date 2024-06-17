@@ -3,7 +3,7 @@
     Properties
     {
         [PowerSlider(3.0)]
-        _WireframeVal("Wireframe width", Range(0., 0.5)) = 0.05
+        _Width("Line Width", Range(0., 0.5)) = 0.05
         _Color("Line Color", color) = (1., 1., 1., 1.)
     }
 
@@ -65,11 +65,11 @@
                 triStream.Append(o);
             }
 
-            float _WireframeVal;
+            float _Width;
             fixed4 _Color;
 
             fixed4 frag(g2f i) : SV_Target {
-            if (!any(bool3(i.bary.x <= _WireframeVal, i.bary.y <= _WireframeVal, i.bary.z <= _WireframeVal)))
+            if (!any(bool3(i.bary.x <= _Width, i.bary.y <= _Width, i.bary.z <= _Width)))
                  discard;
 
                 return _Color;
