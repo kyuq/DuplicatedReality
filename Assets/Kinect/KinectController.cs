@@ -135,7 +135,7 @@ namespace Kinect4Azure
                 else PointcloudMat.DisableKeyword("_ORIGINALPC_ON");
 
                 int pixel_count = DepthImage.width * DepthImage.height;
-                PointcloudMat.SetMatrix("_Transform", transform.localToWorldMatrix);
+                PointcloudMat.SetMatrix("_PointcloudOrigin", transform.localToWorldMatrix);
                 PointcloudMat.SetFloat("_MaxPointDistance", MaxPointDistance);
 
                 OnSetPointcloudProperties(PointcloudMat);

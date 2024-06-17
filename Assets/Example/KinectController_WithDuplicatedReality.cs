@@ -14,10 +14,8 @@ public class KinectController_WithDuplicatedReality : KinectController
         if(EnableDuplication) pointcloudMat.EnableKeyword("_DUPLICATE_ON");
         else pointcloudMat.DisableKeyword("_DUPLICATE_ON");
 
-        pointcloudMat.SetFloat("_ROIScale", ROI.lossyScale.x);
-        pointcloudMat.SetFloat("_DuplScale", Duplicate.lossyScale.x);
-        pointcloudMat.SetVector("_CenterOfROI", ROI.position);
-        pointcloudMat.SetMatrix("_ROI2Dupl", Matrix4x4.TRS(Duplicate.position - ROI.position, Quaternion.Inverse(ROI.rotation) * Duplicate.rotation, Vector3.one));
-        pointcloudMat.SetMatrix("_DuplInverseTransform", Duplicate.worldToLocalMatrix);
+        pointcloudMat.SetMatrix("_Roi2Dupl", Duplicate.localToWorldMatrix * ROI.worldToLocalMatrix);
+        pointcloudMat.SetMatrix("_ROI_Inversed", ROI.worldToLocalMatrix);
+        pointcloudMat.SetMatrix("_Dupl_Inversed", Duplicate.worldToLocalMatrix);
     }
 }
