@@ -6,13 +6,16 @@ This project contains a minimal working example of Duplicated Reality.
 The concept of Duplicated Reality is to show a duplicated real-time augmented representation of the real world. A 3D space, defined by a region of interest, can then be moved around and scaled dynamically Refer to our publication to see how we applied this concept to co-located mixed-reality collaboration.
 
 Real-time Duplication of Point cloud
-<img align="right" width="200" src="image1.gif">
+
+<img align="right" width="400" src="image1.gif">
 
 Dynamic Interactions
-<img align="right" width="200" src="image2.gif">
+
+<img align="right" width="400" src="image2.gif">
 
 Scaling Up and down
-<img align="right" width="200" src="image3.gif">
+
+<img align="right" width="400" src="image3.gif">
 
 ## Requirements
 - Kinect4Azure Camera
@@ -22,7 +25,8 @@ Scaling Up and down
 Copy .dll of the Kinect4Azure SDK into "Assets/Kinect4Azure/Plugins" folder. Related repositories such as by [rfilkov](https://github.com/rfilkov/AzureKinectUnityFree/tree/master/Assets/AzureKinectExamples/SDK/Kinect4AzureSDK/Plugins).
 
 This is how it should look like in Unity's Project Directory:
-<img align="right" width="200" src="KinectSDKSetup.png">
+
+<img align="right" width="400" src="KinectSDKSetup.png">
 
 ## Running the Example
 An example scene is located at "Assets/Example/DuplicatedReality_SampleScene.unity".\
