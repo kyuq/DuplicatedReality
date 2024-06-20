@@ -27,16 +27,15 @@ Scaling Up and down
 - Tested with Unity 2022.3.5f1
 
 ## Project Setup
-Copy .dll of the Kinect4Azure SDK into "Assets/Kinect4Azure/Plugins" folder. Related repositories such as by [rfilkov](https://github.com/rfilkov/AzureKinectUnityFree/tree/master/Assets/AzureKinectExamples/SDK/Kinect4AzureSDK/Plugins).
+Copy .dlls of the Kinect4Azure SDK into the "Assets/Kinect4Azure/Plugins" folder. One source for the SDK can be found here: [rfilkov](https://github.com/rfilkov/AzureKinectUnityFree/tree/master/Assets/AzureKinectExamples/SDK/Kinect4AzureSDK/Plugins)
 
-This is how it should look like in Unity's Project Directory:
+The final directory containing the Kinect4Azure SDK should contain these dlls:
 <p align="left">
   <img width="400" src="KinectSDKSetup.png">
 </p>
 
 ## Running the Example
 An example scene is located at "Assets/Example/DuplicatedReality_SampleScene.unity".\
-The images above are acquired with this sample scene.
 ________________________________________________________________________________________________________________
 Cite us!
 
