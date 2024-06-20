@@ -11,8 +11,9 @@ namespace Kinect4Azure
         public static KinectController Instance;
 
         [Header("Pointcloud Configs")]
-        public bool EnableOriginalPointcloud = true;
+        public bool UseOcclusionShader = true;
         public Shader PointCloudShader;
+        public Shader OcclusionShader;
         [Range(0.01f, 0.1f)]
         public float MaxPointDistance = 0.02f;
 
@@ -58,11 +59,11 @@ namespace Kinect4Azure
 
         }
 
-        private Material SetupPointcloudShader(Texture2D ColorInDepth, ref Texture2D Depth)
+        private Material SetupPointcloudShader(Shader shader, Texture2D ColorInDepth, ref Texture2D Depth)
         {
             GenerateXYTable();
 
-            var PointCloudMat = new Material(PointCloudShader);
+            var PointCloudMat = new Material(shader);
 
             PointCloudMat.SetPass(0);
 
@@ -90,7 +91,6 @@ namespace Kinect4Azure
             return PointCloudMat;
         }
 
-
         private IEnumerator CameraCapture()
         {
             if (Device.GetInstalledCount() == 0)
@@ -116,7 +116,8 @@ namespace Kinect4Azure
 
             SetupTextures(ref ColorImage, ref DepthImage, ref ColorInDepthImage);
 
-            Material PointcloudMat = SetupPointcloudShader(ColorInDepthImage, ref DepthImage);
+            Material PointcloudMat = SetupPointcloudShader(PointCloudShader, ColorInDepthImage, ref DepthImage);
+            Material OcclusionMat = SetupPointcloudShader(OcclusionShader, ColorInDepthImage, ref DepthImage);
 
             while (true)
             {
@@ -131,14 +132,24 @@ namespace Kinect4Azure
                     ColorInDepthImage.Apply();
                 }
 
-                if (EnableOriginalPointcloud) PointcloudMat.EnableKeyword("_ORIGINALPC_ON");
-                else PointcloudMat.DisableKeyword("_ORIGINALPC_ON");
-
                 int pixel_count = DepthImage.width * DepthImage.height;
                 PointcloudMat.SetMatrix("_PointcloudOrigin", transform.localToWorldMatrix);
                 PointcloudMat.SetFloat("_MaxPointDistance", MaxPointDistance);
 
                 OnSetPointcloudProperties(PointcloudMat);
+
+                if(!UseOcclusionShader)
+                {
+                    PointcloudMat.EnableKeyword("_ORIGINALPC_ON");
+                }
+                else
+                {
+                    PointcloudMat.DisableKeyword("_ORIGINALPC_ON");
+
+                    OcclusionMat.SetMatrix("_PointcloudOrigin", transform.localToWorldMatrix);
+                    OcclusionMat.SetFloat("_MaxPointDistance", MaxPointDistance);
+                    Graphics.DrawProcedural(OcclusionMat, new Bounds(transform.position, Vector3.one * 10), MeshTopology.Points, pixel_count);
+                }
 
                 Graphics.DrawProcedural(PointcloudMat, new Bounds(transform.position, Vector3.one * 10), MeshTopology.Points, pixel_count);
 

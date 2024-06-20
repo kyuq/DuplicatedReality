@@ -452,8 +452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c85ae533af38343b6d2c7d00a1df63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableOriginalPointcloud: 1
+  EnableOriginalPointcloud: 0
   PointCloudShader: {fileID: 4800000, guid: c010e960066ff73489f2d8a41b826438, type: 3}
+  OcclusionShader: {fileID: 4800000, guid: 8cfb4b3e2078a8e47902e620917cb02d, type: 3}
   MaxPointDistance: 0.02
   EnableARBackground: 1
   ARBackgroundMaterial: {fileID: 2100000, guid: 48893fb64b8e75f4e9cf862f17c26ada, type: 2}
