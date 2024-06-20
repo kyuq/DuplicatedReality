@@ -33,17 +33,12 @@
 
             #pragma shader_feature _ORIGINALPC_ON __
 
-            // Duplicated Space
+            // Duplicated Reality
             #pragma shader_feature _DUPLICATE_ON __
             float _ROI_Scale = 1;
-            //half4 _ROI_Pos;
-            //float _Dupl_Scale = 1;
-            //half4x4 _ROI_Trans;
             half4x4 _ROI_Inversed;
-           // half4x4 _Dupl_Trans;
-            half4x4 _Roi2Dupl;
             half4x4 _Dupl_Inversed;
-
+            half4x4 _Roi2Dupl;
 
             SamplerState sampler_ColorTex
             {
@@ -214,7 +209,7 @@
             fixed4 frag (g2f i) : SV_Target
             {
                 #if _DUPLICATE_ON
-                if(i.IsDuplicate > 0.5f)
+                if(i.IsDuplicate)
                 {
                     float3 vertInDuplPos = mul(_Dupl_Inversed, i.posWorld);
 

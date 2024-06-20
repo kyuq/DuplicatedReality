@@ -38,7 +38,7 @@ sysinfo.txt
 *.unitypackage
 
 # Ignore Kinect DLLs from SDK
-Assets/Kinect/Plugins/*.dll
-Assets/Kinect/Plugins/*.meta
+Assets/Kinect4Azure/Plugins/*.dll
+Assets/Kinect4Azure/Plugins/*.meta
 
 
